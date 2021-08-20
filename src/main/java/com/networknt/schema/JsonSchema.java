@@ -162,6 +162,24 @@ public class JsonSchema extends BaseJsonValidator {
         return node;
     }
 
+    /**
+     * Create a schema for $ref attribute.
+     *
+     * @param ref String
+     * @return JsonSchema
+     */
+    public JsonSchema getRefSchema(String ref) {
+        JsonNode node = getRefSchemaNode(ref);
+        if (node == null) {
+            return null;
+        }
+        JsonSchemaRef refSchema = RefValidator.getRefSchema(this, validationContext, ref);
+        if (refSchema != null) {
+            return refSchema.getSchema();
+        }
+        return null;
+    }
+
     public JsonSchema findAncestor() {
         JsonSchema ancestor = this;
         if (this.getParentSchema() != null) {
